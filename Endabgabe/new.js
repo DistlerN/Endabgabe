@@ -2,7 +2,6 @@
 var Fireworking;
 (function (Fireworking) {
     window.addEventListener("load", handleLoad);
-    let crc2;
     let startTime = new Date().getTime();
     let startX = 50;
     let startY = 50;
@@ -11,10 +10,11 @@ var Fireworking;
     let currentColor;
     let particleSize;
     let spawnAmount;
+    let ParticleForm;
     let arrayData;
     let particles = [];
     let time = random(500, 1500);
-    let alpha = 1;
+    let fade = 1;
     let canvas;
     let ctx;
     function handleLoad(_event) {
@@ -38,22 +38,26 @@ var Fireworking;
         console.log(params.get("endColor"));
         console.log(params.get("particleSize"));
         console.log(params.get("spawnAmount"));
+        console.log(params.get("ParticleForm"));
+        console.log(params.get("ParticleForm"));
         startColor = params.get("startColor");
         endColor = params.get("endColor");
         particleSize = params.get("particleSize");
         spawnAmount = params.get("spawnAmount");
-        arrayData = ["color one: " + startColor, "color two: " + endColor, "Particle Size: " + particleSize, "Particle Amount: " + spawnAmount];
+        ParticleForm = params.get("ParticleForm");
+        arrayData = ["color one: " + startColor, "color two: " + endColor, "Particle Size: " + particleSize, "Particle Amount: " + spawnAmount, " Particle Form " + ParticleForm];
         let outputDiv = document.getElementById("output");
         for (let i = 0; i < arrayData.length; i++) {
             outputDiv.innerHTML += arrayData[i] + ", ";
         }
     }
-    function deleteFnctn() {
+    function deleteFnctn(_event) {
         console.log("works");
+        delete arrayData[startColor, endColor, particleSize, spawnAmount, ParticleForm];
     }
     function drawOnCanvas() {
         ctx = canvas.getContext("2d");
-        alpha = 1;
+        fade = 1;
         time = random(500, 1500);
         startTime = new Date().getTime();
         currentColor = startColor;
@@ -66,15 +70,15 @@ var Fireworking;
         for (let p = 0; p < particles.length; p++) {
             particle = particles[p];
             ctx.fillStyle = currentColor;
-            ctx.globalAlpha = alpha;
+            ctx.globalAlpha = fade;
             ctx.fillRect(particle.x, particle.y, particleSize, particleSize);
             particle.x += particle.xVel;
             particle.y += particle.yVel;
         }
-        if (new Date().getTime() - startTime > time) {
+        if (new Date().getTime() - startTime > time) { //hier noch heart shape einfügen irgendwie 
             if (new Date().getTime() - startTime > time + 100) {
-                alpha -= 0.01;
-                if (alpha < 0.5) {
+                fade -= 0.01;
+                if (fade < 0.5) {
                     currentColor = endColor;
                 }
             }

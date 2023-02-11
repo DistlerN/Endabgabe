@@ -1,6 +1,5 @@
 namespace Fireworking {
     window.addEventListener("load", handleLoad);
-    let crc2: CanvasRenderingContext2D;
     let startTime = new Date().getTime();
     let startX: number = 50;
     let startY: number = 50;
@@ -9,10 +8,11 @@ namespace Fireworking {
     let currentColor: string;
     let particleSize: string;
     let spawnAmount: string;
+    let ParticleForm: string; 
     let arrayData: string[];
     let particles: any[] = [];
     let time: number = random(500, 1500);
-    let alpha: number = 1;
+    let fade: number = 1;
     let canvas: HTMLCanvasElement;
     let ctx: CanvasRenderingContext2D;
 
@@ -47,14 +47,16 @@ namespace Fireworking {
         console.log(params.get("endColor"));
         console.log(params.get("particleSize"));
         console.log(params.get("spawnAmount"));
+        console.log(params.get("ParticleForm"));
 
 
         startColor = params.get("startColor")!;
         endColor = params.get("endColor")!;
         particleSize = params.get("particleSize")!;
         spawnAmount = params.get("spawnAmount")!;
+        ParticleForm = params.get("ParticleForm")!; 
 
-        arrayData = ["color one: " + startColor, "color two: " + endColor, "Particle Size: " + particleSize, "Particle Amount: " + spawnAmount];
+        arrayData = ["color one: " + startColor, "color two: " + endColor, "Particle Size: " + particleSize, "Particle Amount: " + spawnAmount, " Particle Form " + ParticleForm];
         let outputDiv: HTMLDivElement = document.getElementById("output") as HTMLDivElement;
         for (let i: number = 0; i < arrayData.length; i++) {
             outputDiv.innerHTML += arrayData[i] + ", ";
@@ -62,16 +64,18 @@ namespace Fireworking {
 
     }
 
-    function deleteFnctn(): void {
+    function deleteFnctn(_event: Event): void {
         console.log("works")
+        delete arrayData [startColor, endColor, particleSize, spawnAmount, ParticleForm]; 
     }
 
     function drawOnCanvas(): void {
         ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-        alpha = 1;
+        fade = 1;
         time = random(500, 1500);
         startTime = new Date().getTime();
         currentColor = startColor;
+        
         drawFireworks();
 
     }
@@ -83,16 +87,16 @@ namespace Fireworking {
         for (let p = 0; p < particles.length; p++) {
             particle = particles[p];
             ctx.fillStyle = currentColor;
-            ctx.globalAlpha = alpha;
+            ctx.globalAlpha = fade;
             ctx.fillRect(particle.x, particle.y, <number>particleSize, <number>particleSize);
             particle.x += particle.xVel;
             particle.y += particle.yVel;
         }
 
-        if (new Date().getTime() - startTime > time) {
+        if (new Date().getTime() - startTime > time) { //hier noch heart shape einfügen irgendwie 
             if (new Date().getTime() - startTime > time + 100) {
-                alpha -= 0.01;
-                if (alpha < 0.5) {
+                fade -= 0.01;
+                if (fade < 0.5) {
                     currentColor = endColor
                 }
             }
