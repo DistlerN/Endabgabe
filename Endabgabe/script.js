@@ -14,7 +14,7 @@ var Fireworking;
     let arrayData;
     let particles = [];
     let time = random(500, 1500);
-    let fade = 1;
+    let fade = 0.55;
     let canvas;
     let ctx;
     function handleLoad(_event) {
@@ -30,15 +30,15 @@ var Fireworking;
     }
     function saveFnctn(_event) {
         console.log("hello");
-        let target = _event.target;
+        /*let target: HTMLElement = (<HTMLElement>_event.target);*/
         let formData = new FormData(document.forms[0]);
+        console.log("start", formData.get("startColor"));
         let query = new URLSearchParams(formData);
         let params = new URL("https://ichhabkeineAHnung.com?" + query.toString()).searchParams;
         console.log(params.get("startColor"));
         console.log(params.get("endColor"));
         console.log(params.get("particleSize"));
         console.log(params.get("spawnAmount"));
-        console.log(params.get("ParticleForm"));
         console.log(params.get("ParticleForm"));
         startColor = params.get("startColor");
         endColor = params.get("endColor");
@@ -53,7 +53,15 @@ var Fireworking;
     }
     function deleteFnctn(_event) {
         console.log("works");
-        delete arrayData[startColor, endColor, particleSize, spawnAmount, ParticleForm];
+        /*delete arrayData [startColor, endColor, particleSize, spawnAmount, ParticleForm]; */
+    }
+    function drawFireworks() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let a = 0; a < Number(spawnAmount); a++) {
+            let particle = { x: startX, y: startY, xVel: random(-5, 5), yVel: random(-5, 5) };
+            particles.push(particle);
+        }
+        window.requestAnimationFrame(updateFirework);
     }
     function drawOnCanvas() {
         ctx = canvas.getContext("2d");
@@ -63,30 +71,45 @@ var Fireworking;
         currentColor = startColor;
         drawFireworks();
     }
-    function drawFireworks() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        let particle = { x: startX, y: startY, xVel: random(-5, 5), yVel: random(-5, 5) };
+    /*drawFireworks();
+    updateFirework()
+
+
+
+function drawFireworks(): void {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let p = 0; p < Number(spawnAmount) ; p++) {
+        let particle = { x: startX, y: startY, xVel: random(-5, 5), yVel: random(-5, 5) }
         particles.push(particle);
+      
+        
+    }
+    
+
+    
+     
+    
+   
+}*/
+    function updateFirework() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         for (let p = 0; p < particles.length; p++) {
-            particle = particles[p];
+            let particle = particles[p];
             ctx.fillStyle = currentColor;
             ctx.globalAlpha = fade;
-            ctx.fillRect(particle.x, particle.y, particleSize, particleSize);
+            ctx.fillRect(particle.x, particle.y, Number(particleSize), Number(particleSize));
             particle.x += particle.xVel;
             particle.y += particle.yVel;
         }
+        fade -= 0.01;
+        if (fade < 0.5) {
+            currentColor = endColor;
+        }
         if (new Date().getTime() - startTime > time) { //hier noch heart shape einfügen irgendwie 
-            if (new Date().getTime() - startTime > time + 100) {
-                fade -= 0.01;
-                if (fade < 0.5) {
-                    currentColor = endColor;
-                }
+            if (new Date().getTime() - startTime > time + 2000) {
             }
-            window.requestAnimationFrame(drawFireworks);
         }
-        else {
-            drawFireworks();
-        }
+        window.requestAnimationFrame(updateFirework);
     }
     function random(min, max) {
         min = Math.ceil(min);
@@ -113,11 +136,11 @@ var Fireworking;
         for (let p = 0; p < particles.length; p++) {
             particle = particles[p];
             ctx.fillStyle = colour;
-            ctx.globalAlpha = alpha;
+            ctx.globalAlpha = fade;
             ctx.fillRect(particle.x, particle.y, 5, 5);
             particle.x += particle.xVel;
             particle.y += particle.yVel;
         }
     } */
 })(Fireworking || (Fireworking = {}));
-//# sourceMappingURL=new.js.map
+//# sourceMappingURL=script.js.map

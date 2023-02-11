@@ -1,4 +1,4 @@
-namespace Particle_Draw{
+/*namespace Particle_Draw{
 
   let radius: number; 
   public let x: number; 
@@ -32,5 +32,5 @@ namespace Particle_Draw{
 if 
 
 
-}
+}*/
 

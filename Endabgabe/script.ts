@@ -8,11 +8,11 @@ namespace Fireworking {
     let currentColor: string;
     let particleSize: string;
     let spawnAmount: string;
-    let ParticleForm: string; 
+    let ParticleForm: string;
     let arrayData: string[];
     let particles: any[] = [];
     let time: number = random(500, 1500);
-    let fade: number = 1;
+    let fade: number = 0.55;
     let canvas: HTMLCanvasElement;
     let ctx: CanvasRenderingContext2D;
 
@@ -35,9 +35,11 @@ namespace Fireworking {
     function saveFnctn(_event: Event): void {
         console.log("hello");
 
-        let target: HTMLElement = (<HTMLElement>_event.target);
+        /*let target: HTMLElement = (<HTMLElement>_event.target);*/
 
         let formData: FormData = new FormData(document.forms[0]);
+
+        console.log("start", formData.get("startColor"));
 
         let query: URLSearchParams = new URLSearchParams(<any>formData);
 
@@ -66,7 +68,21 @@ namespace Fireworking {
 
     function deleteFnctn(_event: Event): void {
         console.log("works")
-        delete arrayData [startColor, endColor, particleSize, spawnAmount, ParticleForm]; 
+        /*delete arrayData [startColor, endColor, particleSize, spawnAmount, ParticleForm]; */
+    }
+    function drawFireworks(): void {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+       
+            for (let a=0; a < Number (spawnAmount); a++){
+             let particle = { x: startX, y: startY, xVel: random(-5, 5), yVel: random(-5, 5) }
+        particles.push(particle);
+        }
+        
+        window.requestAnimationFrame(updateFirework);
+        
+            
+           
+        
     }
 
     function drawOnCanvas(): void {
@@ -75,35 +91,56 @@ namespace Fireworking {
         time = random(500, 1500);
         startTime = new Date().getTime();
         currentColor = startColor;
-        
         drawFireworks();
+       
+        
+     }
+        /*drawFireworks();
+        updateFirework()
 
-    }
+   
 
     function drawFireworks(): void {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        let particle = { x: startX, y: startY, xVel: random(-5, 5), yVel: random(-5, 5) }
-        particles.push(particle);
-        for (let p = 0; p < particles.length; p++) {
-            particle = particles[p];
+        for (let p = 0; p < Number(spawnAmount) ; p++) {
+            let particle = { x: startX, y: startY, xVel: random(-5, 5), yVel: random(-5, 5) }
+            particles.push(particle);
+          
+            
+        }
+        
+
+        
+         
+        
+       
+    }*/
+    function updateFirework() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let p = 0; p < particles.length ; p++) {
+           let particle = particles[p];
             ctx.fillStyle = currentColor;
             ctx.globalAlpha = fade;
-            ctx.fillRect(particle.x, particle.y, <number>particleSize, <number>particleSize);
+            ctx.fillRect(particle.x, particle.y, Number(particleSize), Number(particleSize));
             particle.x += particle.xVel;
             particle.y += particle.yVel;
         }
 
+        fade -= 0.01;
+        if (fade < 0.5) {
+         currentColor = endColor
+         } 
+   
         if (new Date().getTime() - startTime > time) { //hier noch heart shape einfügen irgendwie 
-            if (new Date().getTime() - startTime > time + 100) {
-                fade -= 0.01;
-                if (fade < 0.5) {
-                    currentColor = endColor
-                }
-            }
-            window.requestAnimationFrame(drawFireworks);
-        } else {
-            drawFireworks();
-        }
+            if (new Date().getTime() - startTime > time + 2000) {
+            
+         }
+      
+        
+    } 
+        window.requestAnimationFrame(updateFirework);
+      
+    
     }
 
     function random(min: number, max: number): number {
@@ -135,12 +172,10 @@ namespace Fireworking {
         for (let p = 0; p < particles.length; p++) {
             particle = particles[p];
             ctx.fillStyle = colour;
-            ctx.globalAlpha = alpha;
+            ctx.globalAlpha = fade;
             ctx.fillRect(particle.x, particle.y, 5, 5);
             particle.x += particle.xVel;
             particle.y += particle.yVel;
         }
     } */
 }
-
-
