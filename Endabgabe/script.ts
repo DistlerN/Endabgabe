@@ -74,8 +74,9 @@ namespace Fireworking {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
        
             for (let a=0; a < Number (spawnAmount); a++){
-             let particle = { x: startX, y: startY, xVel: random(-5, 5), yVel: random(-5, 5) }
+             let particle = { x: startX, y: startY, xVel: random(-5,3), yVel:random(-5,3) }
         particles.push(particle);
+        console.log(particle)
         }
         
         window.requestAnimationFrame(updateFirework);
